@@ -5,7 +5,7 @@ class Vecteur:
             raise ValueError("LA liste des composantes ne peut pas être vide")
         if not all(isinstance(x,(int,float)) for x in composantes):
             raise ValueError("Toutes les composantes doivent être des nombres")
-        self._composantes = list(composantes) 
+        self._composantes = tuple(composantes) 
 
     def __repr__(self):
         return f"Vecteur({self._composantes})"
@@ -52,4 +52,8 @@ class Vecteur:
 
     def __rmul__(self,other):
         return self.__mul__(other)
+
+    def __hash__(self):
+        return hash(self._composantes)
+
             
