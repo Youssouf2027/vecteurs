@@ -3,7 +3,7 @@ import os
 from vecteurs.generateurs import charger
 from vecteurs.generateurs import mon_chain, mon_islice, mon_groupby
 
-def test_nombre_de_lignes():
+def test_nombre_de_lignes() -> None:
     # créer un fichier temporaire avec 3 lignes
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
         f.write("ligne 1\n")
@@ -28,7 +28,7 @@ def test_nombre_de_lignes():
 
 
 
-def test_fichier_vide():
+def test_fichier_vide() -> None:
     with tempfile.NamedTemporaryFile(mode='w', delete=False, suffix='.txt') as f:
         chemin = f.name  # fichier vide — rien écrit
     
@@ -38,7 +38,7 @@ def test_fichier_vide():
     
     os.remove(chemin)
 
-def test_mon_chain():
+def test_mon_chain() -> None:
     iterable1 = [1, 2, 3]
     iterable2 = ['a', 'b']
     iterable3 = [True, False]
@@ -47,13 +47,13 @@ def test_mon_chain():
     
     assert result == [1, 2, 3, 'a', 'b', True, False]
 
-def test_mon_islice():
+def test_mon_islice() -> None:
     iterable = range(10)
     result = list(mon_islice(iterable, 3, 7))
     
     assert result == [3, 4, 5, 6]
 
-def test_mon_groupby():
+def test_mon_groupby() -> None:
     data = [1, 1, 2, 2, 2, 3, 3, 1]
     key_func = lambda x: x
     

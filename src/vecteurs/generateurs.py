@@ -1,33 +1,39 @@
-def charger(chemin):
+from __future__ import annotations
+from typing import Iterator, TypeVar, Callable, Any, Iterable
+
+T = TypeVar("T")
+K = TypeVar("K")
+
+
+def charger(chemin: str) -> Iterator[str]:
     with open(chemin) as f:
         for ligne in f:
             yield ligne
 
 
-
-# écris une fonction mon_chain qui prend plusieurs itérables et les produit bout à bout avec yield
-
-def mon_chain(*iterables):
+def mon_chain(*iterables: Iterable[T]) -> Iterator[T]:
     for iterable in iterables:
         for item in iterable:
             yield item
 
-def mon_islice(iterable, start, stop):
+
+def mon_islice(iterable: Iterable[T], start: int, stop: int) -> Iterator[T]:
     for i, item in enumerate(iterable):
         if i >= start and i < stop:
             yield item
         elif i >= stop:
             break
 
-def mon_groupby(iterable, key):
+
+def mon_groupby(iterable: Iterable[T], key: Callable[[T], K]) -> Iterator[tuple[K, list[T]]]:
     iterator = iter(iterable)
     try:
         current_item = next(iterator)
     except StopIteration:
         return
     current_key = key(current_item)
-    group = [current_item]
-    
+    group: list[T] = [current_item]
+
     for item in iterator:
         item_key = key(item)
         if item_key == current_key:
@@ -36,5 +42,17 @@ def mon_groupby(iterable, key):
             yield (current_key, group)
             current_key = item_key
             group = [item]
-    
+
     yield (current_key, group)
+
+
+if __name__ == "__main__":
+    result = list(mon_chain([1, 2, 3], ['a', 'b'], [True, False]))
+    print(result)
+
+    result2 = list(mon_islice(range(10), 3, 7))
+    print(result2)
+
+    data = [1, 1, 2, 2, 2, 3, 3, 1]
+    result3 = list(mon_groupby(data, lambda x: x))
+    print(result3)
